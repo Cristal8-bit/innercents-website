@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Literacy Quizzes | InnerCents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .quiz-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        .quiz-card {
+            background: var(--bg-accent);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid rgba(234, 244, 244, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .quiz-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-color: var(--secondary-accent);
+        }
+        .quiz-card.active {
+            border-color: var(--primary-accent);
+            border-width: 3px;
+            background: var(--bg-dark);
+        }
+        .quiz-icon {
+            font-size: 3rem;
+            color: var(--primary-accent);
+            margin-bottom: 1rem;
+        }
+        .quiz-content {
+            display: none;
+            background: var(--bg-accent);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+        .quiz-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .question {
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary-accent);
+        }
+        .question h4 {
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .question .interpersonal-note {
+            background: rgba(72, 209, 204, 0.1);
+            border-left: 3px solid var(--secondary-accent);
+            padding: 1rem;
+            margin-top: 1rem;
+            font-style: italic;
+            color: var(--text-muted);
+            border-radius: 8px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .option {
+            padding: 1rem 1.5rem;
+            background: var(--bg-accent);
+            border: 2px solid rgba(234, 244, 244, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            border-color: var(--secondary-accent);
+            transform: translateX(8px);
+        }
+        .option.selected {
+            border-color: var(--primary-accent);
+            background: rgba(255, 127, 80, 0.1);
+        }
+        .option.correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+        .option.incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+        .feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background: var(--bg-accent);
+        }
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .feedback.correct {
+            border-left: 4px solid #4CAF50;
+        }
+        .feedback.incorrect {
+            border-left: 4px solid #f44336;
+        }
+        .submit-quiz {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .quiz-results {
+            display: none;
+            background: var(--bg-dark);
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .quiz-results.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        .score-display {
+            font-size: 3rem;
+            color: var(--primary-accent);
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">InnerCents</a>
+            <ul class="nav-links">
+                <li><a href="index.html#problem">The Problem</a></li>
+                <li><a href="index.html#solution">The Solution</a></li>
+                <li><a href="index.html#curriculum">Curriculum</a></li>
+                <li><a href="activity.html">Activity</a></li>
+                <li><a href="demos.html">Demos</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="quizzes.html">Quizzes</a></li>
+                <li><a href="budgeting-tool.html">Budget Tool</a></li>
+                <li><a href="index.html#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>Financial Literacy Quizzes</h1>
+            <p class="section-intro">Test your knowledge with quizzes that explore not just what you know, but how you feel and relate to money.</p>
+        </div>
+    </header>
+
+    <main>
+        <section style="padding-top: 4rem;">
+            <div class="container quiz-container">
+                <div class="quiz-selector">
+                    <div class="quiz-card" data-quiz="values">
+                        <div class="quiz-icon"><i class="fas fa-heart"></i></div>
+                        <h3>Money & Values</h3>
+                        <p>Explore how your values shape your financial decisions</p>
+                    </div>
+                    <div class="quiz-card" data-quiz="emotional">
+                        <div class="quiz-icon"><i class="fas fa-brain"></i></div>
+                        <h3>Emotional Intelligence</h3>
+                        <p>Understand your emotional relationship with money</p>
+                    </div>
+                    <div class="quiz-card" data-quiz="practical">
+                        <div class="quiz-icon"><i class="fas fa-coins"></i></div>
+                        <h3>Practical Skills</h3>
+                        <p>Test your knowledge of essential financial concepts</p>
+                    </div>
+                </div>
+
+                <!-- Values Quiz -->
+                <div id="values-quiz" class="quiz-content">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">Money & Values Quiz</h2>
+                    
+                    <div class="question" data-correct="b">
+                        <h4>Question 1: You receive $50 as a gift. What matters most to you when deciding how to use it?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">Saving it all for a future goal</div>
+                            <div class="option" data-answer="b">Sharing some with family or friends who might need it</div>
+                            <div class="option" data-answer="c">Spending it on something fun for myself</div>
+                            <div class="option" data-answer="d">Investing it to grow over time</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> There's no wrong answer here! This reveals your core values. Do you value security, generosity, joy, or growth? Understanding your values helps you make financial decisions that feel right.
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Insight:</strong> Your answer reflects your personal values around money. Someone who values community might naturally share, while someone focused on security might save. Both are valid—the key is knowing yourself!</p>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="open">
+                        <h4>Question 2: When you think about money, what emotion comes up first?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">Excitement and possibility</div>
+                            <div class="option" data-answer="b">Stress and worry</div>
+                            <div class="option" data-answer="c">Guilt or shame</div>
+                            <div class="option" data-answer="d">Confusion or uncertainty</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> Our emotions about money are shaped by our experiences and what we've learned from family and culture. Recognizing these feelings is the first step to a healthier relationship with finances.
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Insight:</strong> All these emotions are common and valid! Many people feel stress about money because of systemic inequities or past experiences. Acknowledging your feelings helps you address them constructively.</p>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <h4>Question 3: Your friend wants to borrow money from you. What's your first consideration?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">Can I afford to lend this without affecting my own needs?</div>
+                            <div class="option" data-answer="b">Will they pay me back on time?</div>
+                            <div class="option" data-answer="c">How can I help them in a way that preserves our friendship?</div>
+                            <div class="option" data-answer="d">Is this enabling unhealthy financial behavior?</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> Money and relationships are complex! This question explores how you balance helping others with protecting yourself financially and emotionally.
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Insight:</strong> The "best" answer considers both practical finances AND the relationship. You can care about someone while also setting healthy boundaries. Sometimes the most caring response is helping them find other resources.</p>
+                        </div>
+                    </div>
+
+                    <div class="submit-quiz">
+                        <button class="cta-button" onclick="submitQuiz('values')">See My Results</button>
+                    </div>
+
+                    <div class="quiz-results" id="values-results">
+                        <h3>Your Results</h3>
+                        <div class="score-display"></div>
+                        <p style="max-width: 600px; margin: 2rem auto; color: var(--text-muted);">
+                            Remember: This quiz is about self-awareness, not right or wrong answers. Understanding your values and emotional responses to money helps you make financial decisions that align with who you are and what matters most to you.
+                        </p>
+                        <button class="cta-button" onclick="resetQuiz('values')">Try Another Quiz</button>
+                    </div>
+                </div>
+
+                <!-- Emotional Intelligence Quiz -->
+                <div id="emotional-quiz" class="quiz-content">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">Emotional Intelligence & Money Quiz</h2>
+                    
+                    <div class="question" data-correct="b">
+                        <h4>Question 1: You just made an impulse purchase you regret. How do you respond?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">Beat myself up about it and promise never to do it again</div>
+                            <div class="option" data-answer="b">Acknowledge the feeling, understand what triggered it, and plan differently</div>
+                            <div class="option" data-answer="c">Ignore it and move on—everyone makes mistakes</div>
+                            <div class="option" data-answer="d">Return the item immediately, no matter what</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> How we respond to financial mistakes reveals our emotional maturity. Self-compassion combined with learning is more effective than shame or avoidance.
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Insight:</strong> Option B shows emotional intelligence! It combines self-compassion with accountability. Understanding WHY we made the purchase (stress? boredom? peer pressure?) helps prevent future regrets.</p>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <h4>Question 2: A family member criticizes your spending habits. How do you feel and respond?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">Defensive—they don't understand my situation</div>
+                            <div class="option" data-answer="b">Ashamed—maybe they're right to judge me</div>
+                            <div class="option" data-answer="c">Curious—what can I learn, even if the delivery was harsh?</div>
+                            <div class="option" data-answer="d">Angry—my money is none of their business</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> Money conversations with family can be emotionally charged. How we navigate criticism reveals our ability to separate emotions from useful feedback.
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Insight:</strong> While all reactions are understandable, curiosity helps us grow! We can acknowledge our feelings (defensiveness, shame, anger) while still asking: "Is there wisdom here I can use?" It doesn't mean the criticism was fair—just that we're emotionally mature enough to extract value.</p>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <h4>Question 3: You see friends enjoying things you can't afford right now. What helps you most?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">Remembering my own values and goals—I'm on my own journey</div>
+                            <div class="option" data-answer="b">Finding free or low-cost ways to connect with them</div>
+                            <div class="option" data-answer="c">Avoiding situations where I feel "less than"</div>
+                            <div class="option" data-answer="d">Working extra hours to keep up financially</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> Social comparison around money is natural but can be painful. Emotional intelligence means recognizing these feelings and responding in healthy ways.
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Insight:</strong> Options A and B both show emotional intelligence! A focuses on internal values (reducing comparison), while B maintains connections creatively. C might protect you short-term but could increase isolation. D risks burnout and keeps you stuck in comparison mode.</p>
+                        </div>
+                    </div>
+
+                    <div class="submit-quiz">
+                        <button class="cta-button" onclick="submitQuiz('emotional')">See My Results</button>
+                    </div>
+
+                    <div class="quiz-results" id="emotional-results">
+                        <h3>Your Emotional Intelligence Score</h3>
+                        <div class="score-display"></div>
+                        <p style="max-width: 600px; margin: 2rem auto; color: var(--text-muted);">
+                            Emotional intelligence with money is a skill you can develop! The more you practice recognizing your feelings, understanding what triggers them, and responding thoughtfully, the stronger this skill becomes.
+                        </p>
+                        <button class="cta-button" onclick="resetQuiz('emotional')">Try Another Quiz</button>
+                    </div>
+                </div>
+
+                <!-- Practical Skills Quiz -->
+                <div id="practical-quiz" class="quiz-content">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">Practical Financial Skills Quiz</h2>
+                    
+                    <div class="question" data-correct="b">
+                        <h4>Question 1: What is the 50/30/20 budgeting rule?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">Save 50%, spend 30%, invest 20%</div>
+                            <div class="option" data-answer="b">50% needs, 30% wants, 20% savings</div>
+                            <div class="option" data-answer="c">50% housing, 30% food, 20% other</div>
+                            <div class="option" data-answer="d">Spend 50 days planning, 30 days acting, 20 days reviewing</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> Budgeting rules are guidelines, not rigid laws. Different life circumstances require different approaches. What matters is finding a system that works for YOUR life.
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Correct!</strong> The 50/30/20 rule suggests 50% for needs (housing, food, utilities), 30% for wants (entertainment, dining out), and 20% for savings and debt repayment. But remember—if you're in a high cost-of-living area or facing systemic barriers, these percentages might not be realistic. Adapt the concept to your reality!</p>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="c">
+                        <h4>Question 2: What does it mean to "pay yourself first"?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">Spend money on things you enjoy before paying bills</div>
+                            <div class="option" data-answer="b">Always withdraw cash before using cards</div>
+                            <div class="option" data-answer="c">Put money into savings before spending on anything else</div>
+                            <div class="option" data-answer="d">Prioritize your salary over side income</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> This concept recognizes that if we wait to save "what's left over," there often isn't anything left. It's about prioritizing your future self—an act of self-care!
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Correct!</strong> "Pay yourself first" means setting aside savings as soon as you get income, treating it like a non-negotiable bill to your future self. This ensures you're building wealth and security, not just surviving paycheck to paycheck.</p>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="a">
+                        <h4>Question 3: What is a credit score primarily used for?</h4>
+                        <div class="options">
+                            <div class="option" data-answer="a">To determine how trustworthy you are with borrowed money</div>
+                            <div class="option" data-answer="b">To calculate how much money you have in the bank</div>
+                            <div class="option" data-answer="c">To track your investment portfolio performance</div>
+                            <div class="option" data-answer="d">To determine your annual salary</div>
+                        </div>
+                        <div class="interpersonal-note">
+                            <strong>💭 Reflection:</strong> Credit scores can feel like a judgment of your worth, but they're really just a tool lenders use. Understanding how they work helps you use them strategically, not let them define you.
+                        </div>
+                        <div class="feedback">
+                            <p><strong>Correct!</strong> Your credit score (usually 300-850) shows lenders how reliably you've managed credit in the past. Higher scores can get you better interest rates on loans. But remember: having a lower score doesn't make you a bad person—it just means you need to rebuild that trust with lenders, often after facing systemic barriers or life challenges.</p>
+                        </div>
+                    </div>
+
+                    <div class="submit-quiz">
+                        <button class="cta-button" onclick="submitQuiz('practical')">See My Results</button>
+                    </div>
+
+                    <div class="quiz-results" id="practical-results">
+                        <h3>Your Practical Skills Score</h3>
+                        <div class="score-display"></div>
+                        <p style="max-width: 600px; margin: 2rem auto; color: var(--text-muted);">
+                            Financial literacy is learned, not innate! If you didn't know some answers, that's okay—it means our education system failed to teach you, not that you failed. The fact that you're here learning shows growth and commitment to your financial future.
+                        </p>
+                        <button class="cta-button" onclick="resetQuiz('practical')">Try Another Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 InnerCents. <a href="index.html" style="color: var(--text-muted);">Return to Homepage</a></p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script>
+        // Quiz functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizCards = document.querySelectorAll('.quiz-card');
+            const quizContents = document.querySelectorAll('.quiz-content');
+            
+            // Quiz card selection
+            quizCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const quizType = card.getAttribute('data-quiz');
+                    
+                    // Remove active class from all cards and contents
+                    quizCards.forEach(c => c.classList.remove('active'));
+                    quizContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to selected card and content
+                    card.classList.add('active');
+                    document.getElementById(`${quizType}-quiz`).classList.add('active');
+                    
+                    // Scroll to quiz
+                    document.getElementById(`${quizType}-quiz`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+
+            // Option selection
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const question = this.closest('.question');
+                    const options = question.querySelectorAll('.option');
+                    
+                    // Remove selected class from all options in this question
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Show feedback
+                    const feedback = question.querySelector('.feedback');
+                    feedback.classList.add('show');
+                });
+            });
+        });
+
+        function submitQuiz(quizType) {
+            const quiz = document.getElementById(`${quizType}-quiz`);
+            const questions = quiz.querySelectorAll('.question');
+            let correct = 0;
+            let answered = 0;
+            
+            questions.forEach(question => {
+                const selectedOption = question.querySelector('.option.selected');
+                if (selectedOption) {
+                    answered++;
+                    const correctAnswer = question.getAttribute('data-correct');
+                    const selectedAnswer = selectedOption.getAttribute('data-answer');
+                    
+                    if (correctAnswer === 'open' || selectedAnswer === correctAnswer) {
+                        correct++;
+                        selectedOption.classList.add('correct');
+                    } else if (correctAnswer !== 'open') {
+                        selectedOption.classList.add('incorrect');
+                        // Show correct answer
+                        question.querySelector(`[data-answer="${correctAnswer}"]`).classList.add('correct');
+                    }
+                }
+            });
+            
+            if (answered === questions.length) {
+                const results = document.getElementById(`${quizType}-results`);
+                const scoreDisplay = results.querySelector('.score-display');
+                const percentage = Math.round((correct / questions.length) * 100);
+                
+                scoreDisplay.textContent = `${correct} out of ${questions.length} (${percentage}%)`;
+                results.classList.add('show');
+                results.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Hide submit button
+                quiz.querySelector('.submit-quiz').style.display = 'none';
+            } else {
+                alert('Please answer all questions before submitting!');
+            }
+        }
+
+        function resetQuiz(quizType) {
+            const quiz = document.getElementById(`${quizType}-quiz`);
+            
+            // Reset all options
+            quiz.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Hide all feedback
+            quiz.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.classList.remove('show');
+            });
+            
+            // Hide results
+            quiz.querySelector('.quiz-results').classList.remove('show');
+            
+            // Show submit button
+            quiz.querySelector('.submit-quiz').style.display = 'block';
+            
+            // Scroll to top of quiz
+            quiz.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // Clear active quiz selection
+            document.querySelectorAll('.quiz-card').forEach(card => card.classList.remove('active'));
+            quiz.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
