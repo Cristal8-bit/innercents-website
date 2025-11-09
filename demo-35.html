@@ -20,6 +20,7 @@
                 <li><a href="index.html#curriculum">Curriculum</a></li>
                 <li><a href="activity.html">Activity</a></li>
                 <li><a href="demos.html">Demos</a></li>
+                <li><a href="reward-system.html">My Pet</a></li>
                 <li><a href="index.html#about">About</a></li>
             </ul>
         </div>
@@ -66,7 +67,17 @@
                         </ul>
                         <p style="margin-top: 1rem; background-color: var(--bg-dark); padding: 1rem; border-radius: 8px; border: 1px solid var(--secondary-accent);"><strong>SEL Focus (Beyond Money):</strong> This helps students recognize "value" in relationships, community, and well-being, not just in monetary terms.</p>
                     </div>
-                     <a href="demos.html" class="back-button">&larr; Back to All Demos</a>
+                    
+                    <!-- Reward System Integration -->
+                    <div style="margin-top: 2rem; padding: 2rem; background: var(--bg-accent); border-radius: 15px; border: 2px solid var(--primary-accent); text-align: center;">
+                        <h4 style="color: var(--primary-accent); margin-bottom: 1rem;">🎉 Complete This Lesson</h4>
+                        <p style="margin-bottom: 1.5rem;">Earn 50 InnerCents Coins for your pet!</p>
+                        <button id="complete-lesson-btn" class="cta-button" style="margin-bottom: 1rem;">Complete Lesson & Earn Coins</button>
+                        <p id="completion-message" style="display: none; color: var(--secondary-accent); font-weight: bold; margin-top: 1rem;"></p>
+                        <a href="reward-system.html" style="display: none; color: var(--secondary-accent); text-decoration: underline; margin-top: 1rem;" id="visit-pet-link">Visit Your Pet →</a>
+                    </div>
+                    
+                     <a href="demos.html" class="back-button" style="margin-top: 2rem; display: inline-block;">&larr; Back to All Demos</a>
                 </div>
             </div>
         </section>
@@ -78,5 +89,9 @@
         </div>
     </footer>
     <script src="script.js"></script>
+    <script src="lesson-completion.js"></script>
+    <script>
+        setupLessonCompletion('demo-35');
+    </script>
 </body>
 </html>
