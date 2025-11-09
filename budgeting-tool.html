@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Budgeting Tool | InnerCents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet>
+    <style>
+        .budget-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .template-card {
+            background: var(--bg-accent);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid rgba(234, 244, 244, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .template-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-color: var(--secondary-accent);
+        }
+        .template-card.active {
+            border-color: var(--primary-accent);
+            border-width: 3px;
+            background: var(--bg-dark);
+        }
+        .template-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .budget-tool {
+            display: none;
+            background: var(--bg-accent);
+            border-radius: 15px;
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+        .budget-tool.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .budget-section {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--bg-dark);
+            border-radius: 12px;
+        }
+        .budget-section h3 {
+            color: var(--secondary-accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary-accent);
+            padding-bottom: 0.5rem;
+        }
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        .input-group label {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+        .input-group input {
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(234, 244, 244, 0.2);
+            background: var(--bg-accent);
+            color: var(--text-light);
+            font-size: 1rem;
+            width: 150px;
+            text-align: right;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--secondary-accent);
+        }
+        .add-item-btn {
+            background: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .add-item-btn:hover {
+            background: var(--primary-accent-hover);
+            transform: scale(1.05);
+        }
+        .summary-box {
+            background: var(--bg-dark);
+            border: 2px solid var(--primary-accent);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .summary-item.total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--heading-color);
+            border-top: 2px solid var(--secondary-accent);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        .summary-item .amount {
+            color: var(--primary-accent);
+            font-weight: bold;
+        }
+        .summary-item.positive .amount {
+            color: #4CAF50;
+        }
+        .summary-item.negative .amount {
+            color: #f44336;
+        }
+        .visual-indicator {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--bg-accent);
+            border-radius: 12px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: var(--bg-dark);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent));
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .emoji-feedback {
+            font-size: 3rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+        .custom-item-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .custom-item-inputs input {
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(234, 244, 244, 0.2);
+            background: var(--bg-accent);
+            color: var(--text-light);
+        }
+        .tips-box {
+            background: rgba(72, 209, 204, 0.1);
+            border-left: 4px solid var(--secondary-accent);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 8px;
+        }
+        .tips-box h4 {
+            color: var(--secondary-accent);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">InnerCents</a>
+            <ul class="nav-links">
+                <li><a href="index.html#problem">The Problem</a></li>
+                <li><a href="index.html#solution">The Solution</a></li>
+                <li><a href="index.html#curriculum">Curriculum</a></li>
+                <li><a href="activity.html">Activity</a></li>
+                <li><a href="demos.html">Demos</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="quizzes.html">Quizzes</a></li>
+                <li><a href="budgeting-tool.html">Budget Tool</a></li>
+                <li><a href="index.html#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>Interactive Budgeting Tool</h1>
+            <p class="section-intro">Choose a budgeting template that matches your needs and experience level. From simple to detailed, we've got you covered!</p>
+        </div>
+    </header>
+
+    <main>
+        <section style="padding-top: 4rem;">
+            <div class="container budget-container">
+                <div class="template-selector">
+                    <div class="template-card" data-template="simple">
+                        <div class="template-icon">🎨</div>
+                        <h3>Simple Budget</h3>
+                        <p><strong>Best for: Young kids (Ages 5-10)</strong></p>
+                        <p>Track money coming in and going out with fun, easy categories!</p>
+                    </div>
+                    <div class="template-card" data-template="teen">
+                        <div class="template-icon">📱</div>
+                        <h3>Teen Budget</h3>
+                        <p><strong>Best for: Teens (Ages 11-18)</strong></p>
+                        <p>Manage allowance, job income, and savings goals with more detail.</p>
+                    </div>
+                    <div class="template-card" data-template="adult">
+                        <div class="template-icon">💼</div>
+                        <h3>Adult Budget</h3>
+                        <p><strong>Best for: Adults (18+)</strong></p>
+                        <p>Comprehensive budget tracking with all expense categories and financial goals.</p>
+                    </div>
+                </div>
+
+                <!-- Simple Budget Tool -->
+                <div id="simple-budget" class="budget-tool">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">My Simple Budget 🎨</h2>
+                    
+                    <div class="budget-section">
+                        <h3>💰 Money I Get</h3>
+                        <div class="input-group">
+                            <label>Allowance:</label>
+                            <input type="number" id="simple-allowance" value="0" min="0" step="1">
+                        </div>
+                        <div class="input-group">
+                            <label>Gifts:</label>
+                            <input type="number" id="simple-gifts" value="0" min="0" step="1">
+                        </div>
+                        <div class="input-group">
+                            <label>Other money I earned:</label>
+                            <input type="number" id="simple-earned" value="0" min="0" step="1">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>🛍️ Money I Spend</h3>
+                        <div class="input-group">
+                            <label>Toys & Fun Stuff:</label>
+                            <input type="number" id="simple-toys" value="0" min="0" step="1">
+                        </div>
+                        <div class="input-group">
+                            <label>Snacks & Treats:</label>
+                            <input type="number" id="simple-snacks" value="0" min="0" step="1">
+                        </div>
+                        <div class="input-group">
+                            <label>Sharing with others:</label>
+                            <input type="number" id="simple-sharing" value="0" min="0" step="1">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>🐷 Money I Save</h3>
+                        <div class="input-group">
+                            <label>Money in my piggy bank:</label>
+                            <input type="number" id="simple-savings" value="0" min="0" step="1">
+                        </div>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="emoji-feedback" id="simple-emoji">😊</div>
+                        <div class="summary-item">
+                            <span>Total Money I Got:</span>
+                            <span class="amount" id="simple-total-income">$0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Total Money I Spent:</span>
+                            <span class="amount" id="simple-total-expenses">$0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Money I Saved:</span>
+                            <span class="amount" id="simple-total-savings">$0</span>
+                        </div>
+                        <div class="summary-item total">
+                            <span>Money Left:</span>
+                            <span class="amount" id="simple-leftover">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="tips-box">
+                        <h4>💡 Tips for Young Budgeters!</h4>
+                        <ul style="color: var(--text-muted); line-height: 1.8;">
+                            <li>Try to save a little bit each time you get money!</li>
+                            <li>Think about what makes you happy before you spend.</li>
+                            <li>Sharing with others feels good too!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Teen Budget Tool -->
+                <div id="teen-budget" class="budget-tool">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">My Teen Budget 📱</h2>
+                    
+                    <div class="budget-section">
+                        <h3>💵 Income</h3>
+                        <div class="input-group">
+                            <label>Allowance:</label>
+                            <input type="number" id="teen-allowance" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Part-time job:</label>
+                            <input type="number" id="teen-job" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Side hustles (babysitting, tutoring, etc.):</label>
+                            <input type="number" id="teen-sidehustle" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Gifts & other:</label>
+                            <input type="number" id="teen-other-income" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>💳 Expenses</h3>
+                        <div class="input-group">
+                            <label>Food & Drinks (eating out, snacks):</label>
+                            <input type="number" id="teen-food" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Entertainment (movies, games, streaming):</label>
+                            <input type="number" id="teen-entertainment" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Transportation (gas, bus fare, rideshare):</label>
+                            <input type="number" id="teen-transport" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Phone bill:</label>
+                            <input type="number" id="teen-phone" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Clothes & Personal care:</label>
+                            <input type="number" id="teen-personal" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Gifts for friends/family:</label>
+                            <input type="number" id="teen-gifts" value="0" min="0" step="0.01">
+                        </div>
+                        <div id="teen-custom-expenses"></div>
+                        <button class="add-item-btn" onclick="addCustomItem('teen', 'expense')">+ Add Custom Expense</button>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>🎯 Savings & Goals</h3>
+                        <div class="input-group">
+                            <label>Emergency fund:</label>
+                            <input type="number" id="teen-emergency" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Saving for college:</label>
+                            <input type="number" id="teen-college" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Specific goal (car, trip, etc.):</label>
+                            <input type="number" id="teen-goal" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="summary-item">
+                            <span>Total Income:</span>
+                            <span class="amount" id="teen-total-income">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Total Expenses:</span>
+                            <span class="amount" id="teen-total-expenses">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Total Savings:</span>
+                            <span class="amount" id="teen-total-savings">$0.00</span>
+                        </div>
+                        <div class="summary-item total" id="teen-balance-item">
+                            <span>Balance:</span>
+                            <span class="amount" id="teen-balance">$0.00</span>
+                        </div>
+                        
+                        <div class="visual-indicator">
+                            <h4 style="margin-bottom: 1rem;">Savings Rate</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="teen-savings-bar" style="width: 0%;">0%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tips-box">
+                        <h4>💡 Smart Tips for Teen Budgeters!</h4>
+                        <ul style="color: var(--text-muted); line-height: 1.8;">
+                            <li>Try to save at least 20% of your income for future goals.</li>
+                            <li>Track where your money actually goes—you might be surprised!</li>
+                            <li>Before buying something, wait 24 hours to see if you still want it.</li>
+                            <li>Build an emergency fund for unexpected expenses.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Adult Budget Tool -->
+                <div id="adult-budget" class="budget-tool">
+                    <h2 style="text-align: center; margin-bottom: 2rem;">Comprehensive Budget Planner 💼</h2>
+                    
+                    <div class="budget-section">
+                        <h3>💰 Income</h3>
+                        <div class="input-group">
+                            <label>Salary/Wages (after tax):</label>
+                            <input type="number" id="adult-salary" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Freelance/Side income:</label>
+                            <input type="number" id="adult-freelance" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Investment income:</label>
+                            <input type="number" id="adult-investments" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Other income:</label>
+                            <input type="number" id="adult-other-income" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>🏠 Housing</h3>
+                        <div class="input-group">
+                            <label>Rent/Mortgage:</label>
+                            <input type="number" id="adult-housing" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Utilities (electric, gas, water):</label>
+                            <input type="number" id="adult-utilities" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Internet & Phone:</label>
+                            <input type="number" id="adult-internet" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Home maintenance/repairs:</label>
+                            <input type="number" id="adult-maintenance" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>🚗 Transportation</h3>
+                        <div class="input-group">
+                            <label>Car payment:</label>
+                            <input type="number" id="adult-car-payment" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Gas/Fuel:</label>
+                            <input type="number" id="adult-gas" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Insurance:</label>
+                            <input type="number" id="adult-car-insurance" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Maintenance/Repairs:</label>
+                            <input type="number" id="adult-car-maintenance" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Public transportation:</label>
+                            <input type="number" id="adult-public-transport" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>🍽️ Food</h3>
+                        <div class="input-group">
+                            <label>Groceries:</label>
+                            <input type="number" id="adult-groceries" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Dining out/Takeout:</label>
+                            <input type="number" id="adult-dining" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>💊 Health & Wellness</h3>
+                        <div class="input-group">
+                            <label>Health insurance:</label>
+                            <input type="number" id="adult-health-insurance" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Medications & Prescriptions:</label>
+                            <input type="number" id="adult-meds" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Gym/Fitness:</label>
+                            <input type="number" id="adult-fitness" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Doctor visits/Co-pays:</label>
+                            <input type="number" id="adult-doctor" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>💳 Debt Payments</h3>
+                        <div class="input-group">
+                            <label>Credit card payments:</label>
+                            <input type="number" id="adult-credit-cards" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Student loans:</label>
+                            <input type="number" id="adult-student-loans" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Personal loans:</label>
+                            <input type="number" id="adult-personal-loans" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>🎭 Entertainment & Lifestyle</h3>
+                        <div class="input-group">
+                            <label>Streaming services:</label>
+                            <input type="number" id="adult-streaming" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Hobbies:</label>
+                            <input type="number" id="adult-hobbies" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Shopping (clothes, etc.):</label>
+                            <input type="number" id="adult-shopping" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Personal care (haircuts, etc.):</label>
+                            <input type="number" id="adult-personal-care" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>👨‍👩‍👧 Family & Dependents</h3>
+                        <div class="input-group">
+                            <label>Childcare:</label>
+                            <input type="number" id="adult-childcare" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Child expenses (clothes, activities):</label>
+                            <input type="number" id="adult-child-expenses" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Pet care:</label>
+                            <input type="number" id="adult-pets" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>🎯 Savings & Investments</h3>
+                        <div class="input-group">
+                            <label>Emergency fund:</label>
+                            <input type="number" id="adult-emergency" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Retirement (401k, IRA):</label>
+                            <input type="number" id="adult-retirement" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>Investment accounts:</label>
+                            <input type="number" id="adult-investment-contribution" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label>General savings:</label>
+                            <input type="number" id="adult-general-savings" value="0" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="budget-section">
+                        <h3>📝 Other Expenses</h3>
+                        <div id="adult-custom-expenses"></div>
+                        <button class="add-item-btn" onclick="addCustomItem('adult', 'expense')">+ Add Custom Expense</button>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="summary-item">
+                            <span>Total Monthly Income:</span>
+                            <span class="amount" id="adult-total-income">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Total Monthly Expenses:</span>
+                            <span class="amount" id="adult-total-expenses">$0.00</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Total Savings & Investments:</span>
+                            <span class="amount" id="adult-total-savings">$0.00</span>
+                        </div>
+                        <div class="summary-item total" id="adult-balance-item">
+                            <span>Monthly Balance:</span>
+                            <span class="amount" id="adult-balance">$0.00</span>
+                        </div>
+                        
+                        <div class="visual-indicator">
+                            <h4 style="margin-bottom: 1rem;">Budget Breakdown</h4>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Housing & Utilities:</span>
+                                    <span id="adult-housing-percent">0%</span>
+                                </div>
+                                <div class="progress-bar" style="height: 20px;">
+                                    <div class="progress-fill" id="adult-housing-bar" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Savings Rate:</span>
+                                    <span id="adult-savings-percent">0%</span>
+                                </div>
+                                <div class="progress-bar" style="height: 20px;">
+                                    <div class="progress-fill" id="adult-savings-bar" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tips-box">
+                        <h4>💡 Financial Wisdom for Adults</h4>
+                        <ul style="color: var(--text-muted); line-height: 1.8;">
+                            <li><strong>50/30/20 Rule:</strong> Aim for 50% needs, 30% wants, 20% savings/debt repayment.</li>
+                            <li><strong>Housing:</strong> Try to keep housing costs under 30% of your income.</li>
+                            <li><strong>Emergency Fund:</strong> Build 3-6 months of expenses for unexpected situations.</li>
+                            <li><strong>Retirement:</strong> Start early! Even small contributions compound over time.</li>
+                            <li><strong>Debt Strategy:</strong> Pay off high-interest debt first (avalanche method) or smallest balances first (snowball method).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 InnerCents. <a href="index.html" style="color: var(--text-muted);">Return to Homepage</a></p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script>
+        let customItemCounters = { simple: 0, teen: 0, adult: 0 };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Template selection
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const template = card.getAttribute('data-template');
+                    
+                    // Remove active from all
+                    document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
+                    document.querySelectorAll('.budget-tool').forEach(t => t.classList.remove('active'));
+                    
+                    // Activate selected
+                    card.classList.add('active');
+                    document.getElementById(`${template}-budget`).classList.add('active');
+                    
+                    // Scroll to tool
+                    document.getElementById(`${template}-budget`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+
+            // Add input listeners for all budget types
+            setupBudgetCalculator('simple');
+            setupBudgetCalculator('teen');
+            setupBudgetCalculator('adult');
+        });
+
+        function setupBudgetCalculator(type) {
+            const tool = document.getElementById(`${type}-budget`);
+            if (!tool) return;
+
+            const inputs = tool.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => calculateBudget(type));
+            });
+        }
+
+        function calculateBudget(type) {
+            if (type === 'simple') {
+                calculateSimpleBudget();
+            } else if (type === 'teen') {
+                calculateTeenBudget();
+            } else if (type === 'adult') {
+                calculateAdultBudget();
+            }
+        }
+
+        function calculateSimpleBudget() {
+            const income = 
+                parseFloat(document.getElementById('simple-allowance').value || 0) +
+                parseFloat(document.getElementById('simple-gifts').value || 0) +
+                parseFloat(document.getElementById('simple-earned').value || 0);
+
+            const expenses = 
+                parseFloat(document.getElementById('simple-toys').value || 0) +
+                parseFloat(document.getElementById('simple-snacks').value || 0) +
+                parseFloat(document.getElementById('simple-sharing').value || 0);
+
+            const savings = parseFloat(document.getElementById('simple-savings').value || 0);
+            const leftover = income - expenses - savings;
+
+            document.getElementById('simple-total-income').textContent = '$' + income.toFixed(0);
+            document.getElementById('simple-total-expenses').textContent = '$' + expenses.toFixed(0);
+            document.getElementById('simple-total-savings').textContent = '$' + savings.toFixed(0);
+            document.getElementById('simple-leftover').textContent = '$' + leftover.toFixed(0);
+
+            // Update emoji
+            const emoji = document.getElementById('simple-emoji');
+            if (leftover >= 0 && savings > 0) {
+                emoji.textContent = '🌟';
+            } else if (leftover >= 0) {
+                emoji.textContent = '😊';
+            } else {
+                emoji.textContent = '😕';
+            }
+        }
+
+        function calculateTeenBudget() {
+            const income = 
+                parseFloat(document.getElementById('teen-allowance').value || 0) +
+                parseFloat(document.getElementById('teen-job').value || 0) +
+                parseFloat(document.getElementById('teen-sidehustle').value || 0) +
+                parseFloat(document.getElementById('teen-other-income').value || 0);
+
+            let expenses = 
+                parseFloat(document.getElementById('teen-food').value || 0) +
+                parseFloat(document.getElementById('teen-entertainment').value || 0) +
+                parseFloat(document.getElementById('teen-transport').value || 0) +
+                parseFloat(document.getElementById('teen-phone').value || 0) +
+                parseFloat(document.getElementById('teen-personal').value || 0) +
+                parseFloat(document.getElementById('teen-gifts').value || 0);
+
+            // Add custom expenses
+            document.querySelectorAll('#teen-custom-expenses input[type="number"]').forEach(input => {
+                expenses += parseFloat(input.value || 0);
+            });
+
+            const savings = 
+                parseFloat(document.getElementById('teen-emergency').value || 0) +
+                parseFloat(document.getElementById('teen-college').value || 0) +
+                parseFloat(document.getElementById('teen-goal').value || 0);
+
+            const balance = income - expenses - savings;
+
+            document.getElementById('teen-total-income').textContent = '$' + income.toFixed(2);
+            document.getElementById('teen-total-expenses').textContent = '$' + expenses.toFixed(2);
+            document.getElementById('teen-total-savings').textContent = '$' + savings.toFixed(2);
+            document.getElementById('teen-balance').textContent = '$' + balance.toFixed(2);
+
+            // Update balance color
+            const balanceItem = document.getElementById('teen-balance-item');
+            balanceItem.classList.remove('positive', 'negative');
+            if (balance > 0) balanceItem.classList.add('positive');
+            else if (balance < 0) balanceItem.classList.add('negative');
+
+            // Update savings rate bar
+            const savingsRate = income > 0 ? (savings / income) * 100 : 0;
+            const savingsBar = document.getElementById('teen-savings-bar');
+            savingsBar.style.width = Math.min(savingsRate, 100) + '%';
+            savingsBar.textContent = savingsRate.toFixed(0) + '%';
+        }
+
+        function calculateAdultBudget() {
+            const income = 
+                parseFloat(document.getElementById('adult-salary').value || 0) +
+                parseFloat(document.getElementById('adult-freelance').value || 0) +
+                parseFloat(document.getElementById('adult-investments').value || 0) +
+                parseFloat(document.getElementById('adult-other-income').value || 0);
+
+            let expenses = 
+                // Housing
+                parseFloat(document.getElementById('adult-housing').value || 0) +
+                parseFloat(document.getElementById('adult-utilities').value || 0) +
+                parseFloat(document.getElementById('adult-internet').value || 0) +
+                parseFloat(document.getElementById('adult-maintenance').value || 0) +
+                // Transportation
+                parseFloat(document.getElementById('adult-car-payment').value || 0) +
+                parseFloat(document.getElementById('adult-gas').value || 0) +
+                parseFloat(document.getElementById('adult-car-insurance').value || 0) +
+                parseFloat(document.getElementById('adult-car-maintenance').value || 0) +
+                parseFloat(document.getElementById('adult-public-transport').value || 0) +
+                // Food
+                parseFloat(document.getElementById('adult-groceries').value || 0) +
+                parseFloat(document.getElementById('adult-dining').value || 0) +
+                // Health
+                parseFloat(document.getElementById('adult-health-insurance').value || 0) +
+                parseFloat(document.getElementById('adult-meds').value || 0) +
+                parseFloat(document.getElementById('adult-fitness').value || 0) +
+                parseFloat(document.getElementById('adult-doctor').value || 0) +
+                // Debt
+                parseFloat(document.getElementById('adult-credit-cards').value || 0) +
+                parseFloat(document.getElementById('adult-student-loans').value || 0) +
+                parseFloat(document.getElementById('adult-personal-loans').value || 0) +
+                // Entertainment
+                parseFloat(document.getElementById('adult-streaming').value || 0) +
+                parseFloat(document.getElementById('adult-hobbies').value || 0) +
+                parseFloat(document.getElementById('adult-shopping').value || 0) +
+                parseFloat(document.getElementById('adult-personal-care').value || 0) +
+                // Family
+                parseFloat(document.getElementById('adult-childcare').value || 0) +
+                parseFloat(document.getElementById('adult-child-expenses').value || 0) +
+                parseFloat(document.getElementById('adult-pets').value || 0);
+
+            // Add custom expenses
+            document.querySelectorAll('#adult-custom-expenses input[type="number"]').forEach(input => {
+                expenses += parseFloat(input.value || 0);
+            });
+
+            const housingTotal = 
+                parseFloat(document.getElementById('adult-housing').value || 0) +
+                parseFloat(document.getElementById('adult-utilities').value || 0) +
+                parseFloat(document.getElementById('adult-internet').value || 0) +
+                parseFloat(document.getElementById('adult-maintenance').value || 0);
+
+            const savings = 
+                parseFloat(document.getElementById('adult-emergency').value || 0) +
+                parseFloat(document.getElementById('adult-retirement').value || 0) +
+                parseFloat(document.getElementById('adult-investment-contribution').value || 0) +
+                parseFloat(document.getElementById('adult-general-savings').value || 0);
+
+            const balance = income - expenses - savings;
+
+            document.getElementById('adult-total-income').textContent = '$' + income.toFixed(2);
+            document.getElementById('adult-total-expenses').textContent = '$' + expenses.toFixed(2);
+            document.getElementById('adult-total-savings').textContent = '$' + savings.toFixed(2);
+            document.getElementById('adult-balance').textContent = '$' + balance.toFixed(2);
+
+            // Update balance color
+            const balanceItem = document.getElementById('adult-balance-item');
+            balanceItem.classList.remove('positive', 'negative');
+            if (balance > 0) balanceItem.classList.add('positive');
+            else if (balance < 0) balanceItem.classList.add('negative');
+
+            // Update housing percentage
+            const housingPercent = income > 0 ? (housingTotal / income) * 100 : 0;
+            document.getElementById('adult-housing-percent').textContent = housingPercent.toFixed(0) + '%';
+            document.getElementById('adult-housing-bar').style.width = Math.min(housingPercent, 100) + '%';
+
+            // Update savings rate
+            const savingsRate = income > 0 ? (savings / income) * 100 : 0;
+            document.getElementById('adult-savings-percent').textContent = savingsRate.toFixed(0) + '%';
+            document.getElementById('adult-savings-bar').style.width = Math.min(savingsRate, 100) + '%';
+        }
+
+        function addCustomItem(type, category) {
+            const container = document.getElementById(`${type}-custom-${category}s`);
+            const itemId = `${type}-custom-${category}-${customItemCounters[type]++}`;
+            
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'custom-item-inputs';
+            itemDiv.innerHTML = `
+                <input type="text" placeholder="Item name" id="${itemId}-name">
+                <input type="number" placeholder="Amount" id="${itemId}-amount" value="0" min="0" step="0.01">
+                <button class="delete-btn" onclick="removeCustomItem('${itemId}', '${type}')">Delete</button>
+            `;
+            
+            container.appendChild(itemDiv);
+            
+            // Add listener to the new amount input
+            document.getElementById(`${itemId}-amount`).addEventListener('input', () => calculateBudget(type));
+        }
+
+        function removeCustomItem(itemId, type) {
+            const nameInput = document.getElementById(`${itemId}-name`);
+            if (nameInput) {
+                nameInput.closest('.custom-item-inputs').remove();
+                calculateBudget(type);
+            }
+        }
+    </script>
+</body>
+</html>

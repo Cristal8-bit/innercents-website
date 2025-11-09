@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Literacy Resources | InnerCents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        .resource-category {
+            margin-bottom: 4rem;
+        }
+        .resource-category h3 {
+            color: var(--secondary-accent);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-accent);
+            padding-bottom: 1rem;
+        }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .resource-card {
+            background: var(--bg-accent);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(234, 244, 244, 0.1);
+            transition: all 0.3s ease;
+        }
+        .resource-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border-color: var(--secondary-accent);
+        }
+        .resource-card h4 {
+            color: var(--heading-color);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        .resource-card .resource-icon {
+            font-size: 2.5rem;
+            color: var(--primary-accent);
+            margin-bottom: 1rem;
+        }
+        .resource-card p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .resource-card .helpful-tag {
+            display: inline-block;
+            background: var(--bg-dark);
+            color: var(--secondary-accent);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .resource-link {
+            display: inline-block;
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: color 0.3s ease;
+        }
+        .resource-link:hover {
+            color: var(--primary-accent-hover);
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">InnerCents</a>
+            <ul class="nav-links">
+                <li><a href="index.html#problem">The Problem</a></li>
+                <li><a href="index.html#solution">The Solution</a></li>
+                <li><a href="index.html#curriculum">Curriculum</a></li>
+                <li><a href="activity.html">Activity</a></li>
+                <li><a href="demos.html">Demos</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="quizzes.html">Quizzes</a></li>
+                <li><a href="budgeting-tool.html">Budget Tool</a></li>
+                <li><a href="index.html#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>Financial Literacy Resources</h1>
+            <p class="section-intro">A curated collection of resources to support your financial literacy journey, from childhood through adulthood.</p>
+        </div>
+    </header>
+
+    <main>
+        <section style="padding-top: 4rem;">
+            <div class="container">
+                <!-- For Young Learners (K-5) -->
+                <div class="resource-category">
+                    <h3><i class="fas fa-child"></i> For Young Learners (Ages 5-11)</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-book-reader"></i></div>
+                            <h4>Storybooks About Money</h4>
+                            <p>Age-appropriate books that introduce money concepts through engaging stories and relatable characters.</p>
+                            <span class="helpful-tag">Why helpful: Makes learning fun and relatable</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Examples: "Alexander, Who Used to Be Rich Last Sunday" and "A Chair for My Mother" teach saving and decision-making through emotional storytelling.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-piggy-bank"></i></div>
+                            <h4>Visual Saving Tools</h4>
+                            <p>Clear jars, piggy banks, and visual charts that let children see their money grow in real-time.</p>
+                            <span class="helpful-tag">Why helpful: Builds concrete understanding</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Watching money accumulate visually reinforces saving habits and creates excitement about financial goals.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-gamepad"></i></div>
+                            <h4>Interactive Money Games</h4>
+                            <p>Educational games that teach counting, sorting, and basic money management through play.</p>
+                            <span class="helpful-tag">Why helpful: Learning through play</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Games like store simulations and coin sorting activities make abstract concepts tangible and enjoyable.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For Teens (6-12) -->
+                <div class="resource-category">
+                    <h3><i class="fas fa-user-graduate"></i> For Teens (Ages 12-18)</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <h4>Budgeting Apps for Youth</h4>
+                            <p>Teen-friendly apps like Greenlight, GoHenry, and FamZoo that teach money management with parental oversight.</p>
+                            <span class="helpful-tag">Why helpful: Real-world practice in safe environment</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">These apps provide hands-on experience with digital banking, spending tracking, and saving goals while building financial independence.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-briefcase"></i></div>
+                            <h4>First Job Resources</h4>
+                            <p>Guides on earning, taxes, paychecks, and workplace financial literacy for teens entering the workforce.</p>
+                            <span class="helpful-tag">Why helpful: Practical preparation</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Understanding W-4 forms, tax deductions, and net vs. gross pay empowers teens to navigate their first employment experiences.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <h4>College Financial Planning</h4>
+                            <p>Resources on FAFSA, scholarships, student loans, and understanding the true cost of college.</p>
+                            <span class="helpful-tag">Why helpful: Reduces anxiety and debt</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Early planning and understanding of college costs helps families make informed decisions and avoid overwhelming debt.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For Young Adults (18-30) -->
+                <div class="resource-category">
+                    <h3><i class="fas fa-user"></i> For Young Adults (Ages 18-30)</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-credit-card"></i></div>
+                            <h4>Credit Building Resources</h4>
+                            <p>Educational materials on credit scores, credit reports, and responsible credit card use.</p>
+                            <span class="helpful-tag">Why helpful: Builds financial foundation</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Understanding credit early prevents costly mistakes and opens doors to better interest rates and financial opportunities.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-chart-line"></i></div>
+                            <h4>Investment Platforms</h4>
+                            <p>Beginner-friendly investment apps like Robinhood, Acorns, and Betterment that make investing accessible.</p>
+                            <span class="helpful-tag">Why helpful: Starts wealth building early</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Low barriers to entry and educational resources help young adults start investing with small amounts and build long-term wealth.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-home"></i></div>
+                            <h4>Renting & Housing Guides</h4>
+                            <p>Resources on leases, tenant rights, budgeting for housing costs, and planning for homeownership.</p>
+                            <span class="helpful-tag">Why helpful: Protects and prepares</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Understanding housing costs and rights helps young adults avoid scams, budget effectively, and work toward future goals.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Wellness & Mental Health -->
+                <div class="resource-category">
+                    <h3><i class="fas fa-heart"></i> Financial Wellness & Mental Health</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-brain"></i></div>
+                            <h4>Money & Emotions Resources</h4>
+                            <p>Books, podcasts, and workshops exploring the psychological aspects of money and financial behavior.</p>
+                            <span class="helpful-tag">Why helpful: Addresses root causes</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Understanding the emotional drivers behind spending helps create lasting behavioral change and reduces financial stress.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-hands-helping"></i></div>
+                            <h4>Financial Counseling Services</h4>
+                            <p>Non-profit organizations offering free or low-cost financial counseling and debt management support.</p>
+                            <span class="helpful-tag">Why helpful: Professional guidance</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Organizations like NFCC and local community centers provide personalized support for those facing financial challenges.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-users"></i></div>
+                            <h4>Community Financial Programs</h4>
+                            <p>Local initiatives, credit unions, and community banks that offer financial education and accessible services.</p>
+                            <span class="helpful-tag">Why helpful: Community-centered support</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Community-based programs understand local contexts and provide culturally relevant financial education and services.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools & Technology -->
+                <div class="resource-category">
+                    <h3><i class="fas fa-tools"></i> Digital Tools & Technology</h3>
+                    <div class="resource-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-calculator"></i></div>
+                            <h4>Budgeting Tools</h4>
+                            <p>Apps and software like Mint, YNAB (You Need A Budget), and EveryDollar for tracking income and expenses.</p>
+                            <span class="helpful-tag">Why helpful: Real-time awareness</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Automated tracking removes guesswork and provides instant visibility into spending patterns and financial health.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-shield-alt"></i></div>
+                            <h4>Financial Security Tools</h4>
+                            <p>Password managers, identity theft protection, and secure banking practices for the digital age.</p>
+                            <span class="helpful-tag">Why helpful: Protects your assets</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Protecting digital financial information is crucial in an increasingly online financial world.</p>
+                        </div>
+                        <div class="resource-card">
+                            <div class="resource-icon"><i class="fas fa-podcast"></i></div>
+                            <h4>Financial Education Podcasts</h4>
+                            <p>Engaging podcasts covering personal finance, investing, and economic justice for various audiences.</p>
+                            <span class="helpful-tag">Why helpful: Learning on the go</span>
+                            <p style="margin-top: 1rem; color: var(--text-light);">Podcasts make financial education accessible during commutes, workouts, or daily routines, fitting learning into busy lives.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 4rem; padding: 3rem; background: var(--bg-accent); border-radius: 20px;">
+                    <h3 style="margin-bottom: 1rem;">Ready to Practice Your Skills?</h3>
+                    <p style="margin-bottom: 2rem;">Try our interactive budgeting tool or test your knowledge with our quizzes!</p>
+                    <a href="budgeting-tool.html" class="cta-button" style="margin-right: 1rem;">Try Budget Tool</a>
+                    <a href="quizzes.html" class="cta-button">Take a Quiz</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 InnerCents. <a href="index.html" style="color: var(--text-muted);">Return to Homepage</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
