@@ -156,6 +156,9 @@ class InnerCentsPet {
             document.getElementById('achievements-modal').style.display = 'none';
         });
 
+        // Math game
+        document.getElementById('math-game-button').addEventListener('click', () => this.playMathGame());
+
         // Tutorial
         document.getElementById('start-journey-button').addEventListener('click', () => {
             document.getElementById('tutorial-modal').style.display = 'none';
@@ -501,6 +504,43 @@ class InnerCentsPet {
         });
 
         document.getElementById('achievements-modal').style.display = 'flex';
+    }
+
+    // Play math mini-game
+    playMathGame() {
+        const num1 = Math.floor(Math.random() * 20) + 1;
+        const num2 = Math.floor(Math.random() * 20) + 1;
+        const operations = ['+', '-', '×'];
+        const operation = operations[Math.floor(Math.random() * operations.length)];
+        
+        let answer;
+        let question;
+        if (operation === '+') {
+            answer = num1 + num2;
+            question = `${num1} + ${num2}`;
+        } else if (operation === '-') {
+            answer = Math.max(num1, num2) - Math.min(num1, num2);
+            question = `${Math.max(num1, num2)} - ${Math.min(num1, num2)}`;
+        } else {
+            answer = num1 * num2;
+            question = `${num1} × ${num2}`;
+        }
+        
+        const userAnswer = prompt(`Quick Math Challenge!\n\nWhat is ${question}?`);
+        
+        if (userAnswer !== null) {
+            if (parseInt(userAnswer) === answer) {
+                this.coins += 10;
+                this.learningProgress = Math.min(100, this.learningProgress + 2);
+                this.showPetMessage('Great job!');
+                alert('Correct! You earned 10 coins! 🎉');
+                this.updateUI();
+                this.saveGameState();
+            } else {
+                alert(`Not quite! The answer was ${answer}. Try again!`);
+                this.showPetMessage('Keep practicing!');
+            }
+        }
     }
 
     // Game loop for passive stat decay

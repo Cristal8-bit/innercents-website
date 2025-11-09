@@ -541,6 +541,7 @@
 @media (max-width: 900px) {
     .pet-container {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .pet-actions {
@@ -548,7 +549,12 @@
     }
 
     .shop-tabs {
-        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .shop-tab {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
     }
 
     .activities-grid {
@@ -566,6 +572,48 @@
 
     .pet-emoji {
         font-size: 6rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .currency-display {
+        font-size: 1.1rem;
+        padding: 0.6rem 1.2rem;
+    }
+
+    .modal-content {
+        padding: 2rem;
+        width: 95%;
+    }
+
+    .shop-items {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .pet-background {
+        height: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .shop-items {
+        grid-template-columns: 1fr;
+    }
+
+    .pet-emoji {
+        font-size: 5rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+    }
+
+    .action-button {
+        font-size: 0.9rem;
+        padding: 0.9rem 1.2rem;
     }
 }
 

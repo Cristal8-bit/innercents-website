@@ -89,56 +89,9 @@
         </div>
     </footer>
     <script src="script.js"></script>
+    <script src="lesson-completion.js"></script>
     <script>
-        // Lesson completion integration with reward system
-        document.getElementById('complete-lesson-btn').addEventListener('click', function() {
-            const lessonId = 'demo-35';
-            
-            // Get current pet state from localStorage
-            let petState = localStorage.getItem('innerCentsPetState');
-            if (petState) {
-                petState = JSON.parse(petState);
-            } else {
-                // Initialize if not exists
-                petState = {
-                    coins: 100,
-                    petName: "My Pet",
-                    happiness: 100,
-                    hunger: 100,
-                    energy: 100,
-                    learningProgress: 0,
-                    stage: 0,
-                    ownedItems: [],
-                    completedLessons: [],
-                    achievements: [],
-                    lastVisit: Date.now(),
-                    currentBackground: 'default',
-                    firstVisit: true
-                };
-            }
-            
-            // Check if lesson already completed
-            if (petState.completedLessons.includes(lessonId)) {
-                document.getElementById('completion-message').textContent = 'You already completed this lesson!';
-                document.getElementById('completion-message').style.display = 'block';
-                document.getElementById('visit-pet-link').style.display = 'inline-block';
-            } else {
-                // Award coins and mark as complete
-                petState.completedLessons.push(lessonId);
-                petState.coins += 50;
-                petState.learningProgress = Math.min(100, petState.learningProgress + 10);
-                
-                // Save updated state
-                localStorage.setItem('innerCentsPetState', JSON.stringify(petState));
-                
-                // Show success message
-                document.getElementById('completion-message').textContent = '✅ Lesson completed! You earned 50 coins!';
-                document.getElementById('completion-message').style.display = 'block';
-                document.getElementById('visit-pet-link').style.display = 'inline-block';
-                document.getElementById('complete-lesson-btn').disabled = true;
-                document.getElementById('complete-lesson-btn').textContent = 'Completed!';
-            }
-        });
+        setupLessonCompletion('demo-35');
     </script>
 </body>
 </html>
