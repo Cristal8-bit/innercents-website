@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo: Grade 3-5 | InnerCents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body data-grade-band="3-5">
+    <nav class="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">InnerCents</a>
+            <ul class="nav-links">
+                <li><a href="index.html#problem">The Problem</a></li>
+                <li><a href="index.html#solution">The Solution</a></li>
+                <li><a href="index.html#curriculum">Curriculum</a></li>
+                <li><a href="activity.html">Activity</a></li>
+                <li><a href="demos.html">Demos</a></li>
+                <li><a href="index.html#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>Demo: Grades 3-5</h1>
+            <h2>Trade & Value</h2>
+        </div>
+    </header>
+
+    <main>
+        <section class="demo-container" style="padding-top: 4rem;">
+            <div class="container">
+                <!-- State Standards Alignment Tool -->
+                <div class="standards-tool curriculum-topic" style="margin-bottom: 3rem;">
+                    <label for="state-select" style="font-weight: bold; margin-bottom: 1rem; display: block; font-size: 1.2rem;">See how this lesson aligns with your state's standards:</label>
+                    <select name="states" id="state-select" style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #444; background: var(--bg-dark); color: var(--text-light); margin-bottom: 1rem;">
+                        <option value="">Select Your State</option>
+                        <option value="California">California</option>
+                        <option value="Texas">Texas</option>
+                        <option value="New York">New York</option>
+                        <option value="Florida">Florida</option>
+                    </select>
+                    <div id="standards-display" style="background: var(--bg-dark); padding: 1.5rem; border-radius: 8px;">
+                        <p>Select a state to see aligned standards.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Lesson Content -->
+                <div class="lesson-content curriculum-topic">
+                    <h3>Lesson Focus: Indigenous Economics & Community Value</h3>
+                    <p>This lesson explores how different cultures have valued resources and exchanged goods outside of traditional money systems.</p>
+                    
+                    <div class="interactive-element" style="margin-top: 2rem; border-top: 1px solid rgba(139,148,158,0.2); padding-top: 2rem;">
+                        <h4>Activity: What is "Value"?</h4>
+                        <p>Consider the story of the Three Sisters—corn, beans, and squash—an agricultural practice of many Indigenous communities. The three crops support each other's growth. The corn provides a stalk for the beans to climb, the beans provide nitrogen to the soil, and the squash provides ground cover to prevent weeds.</p>
+                        <p><strong>Question:</strong> Besides food, what "value" do the Three Sisters provide to the community?</p>
+                        <ul style="margin-left: 20px; margin-top: 1rem;">
+                            <li>Value of teamwork and mutual support.</li>
+                            <li>Value of sustainability and caring for the land.</li>
+                            <li>Value of knowledge passed through generations.</li>
+                        </ul>
+                        <p style="margin-top: 1rem; background-color: var(--bg-dark); padding: 1rem; border-radius: 8px; border: 1px solid var(--secondary-accent);"><strong>SEL Focus (Beyond Money):</strong> This helps students recognize "value" in relationships, community, and well-being, not just in monetary terms.</p>
+                    </div>
+                     <a href="demos.html" class="back-button">&larr; Back to All Demos</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 InnerCents. <a href="index.html" style="color: var(--text-muted);">Return to Homepage</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
