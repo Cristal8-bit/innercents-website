@@ -20,6 +20,7 @@
                 <li><a href="index.html#curriculum">Curriculum</a></li>
                 <li><a href="activity.html">Activity</a></li>
                 <li><a href="demos.html">Demos</a></li>
+                <li><a href="reward-system.html">My Pet</a></li>
                 <li><a href="index.html#about">About</a></li>
             </ul>
         </div>
@@ -66,7 +67,17 @@
                         </ul>
                         <p style="margin-top: 1rem; background-color: var(--bg-dark); padding: 1rem; border-radius: 8px; border: 1px solid var(--secondary-accent);"><strong>SEL Focus (Beyond Money):</strong> This helps students recognize "value" in relationships, community, and well-being, not just in monetary terms.</p>
                     </div>
-                     <a href="demos.html" class="back-button">&larr; Back to All Demos</a>
+                    
+                    <!-- Reward System Integration -->
+                    <div style="margin-top: 2rem; padding: 2rem; background: var(--bg-accent); border-radius: 15px; border: 2px solid var(--primary-accent); text-align: center;">
+                        <h4 style="color: var(--primary-accent); margin-bottom: 1rem;">🎉 Complete This Lesson</h4>
+                        <p style="margin-bottom: 1.5rem;">Earn 50 InnerCents Coins for your pet!</p>
+                        <button id="complete-lesson-btn" class="cta-button" style="margin-bottom: 1rem;">Complete Lesson & Earn Coins</button>
+                        <p id="completion-message" style="display: none; color: var(--secondary-accent); font-weight: bold; margin-top: 1rem;"></p>
+                        <a href="reward-system.html" style="display: none; color: var(--secondary-accent); text-decoration: underline; margin-top: 1rem;" id="visit-pet-link">Visit Your Pet →</a>
+                    </div>
+                    
+                     <a href="demos.html" class="back-button" style="margin-top: 2rem; display: inline-block;">&larr; Back to All Demos</a>
                 </div>
             </div>
         </section>
@@ -78,5 +89,56 @@
         </div>
     </footer>
     <script src="script.js"></script>
+    <script>
+        // Lesson completion integration with reward system
+        document.getElementById('complete-lesson-btn').addEventListener('click', function() {
+            const lessonId = 'demo-35';
+            
+            // Get current pet state from localStorage
+            let petState = localStorage.getItem('innerCentsPetState');
+            if (petState) {
+                petState = JSON.parse(petState);
+            } else {
+                // Initialize if not exists
+                petState = {
+                    coins: 100,
+                    petName: "My Pet",
+                    happiness: 100,
+                    hunger: 100,
+                    energy: 100,
+                    learningProgress: 0,
+                    stage: 0,
+                    ownedItems: [],
+                    completedLessons: [],
+                    achievements: [],
+                    lastVisit: Date.now(),
+                    currentBackground: 'default',
+                    firstVisit: true
+                };
+            }
+            
+            // Check if lesson already completed
+            if (petState.completedLessons.includes(lessonId)) {
+                document.getElementById('completion-message').textContent = 'You already completed this lesson!';
+                document.getElementById('completion-message').style.display = 'block';
+                document.getElementById('visit-pet-link').style.display = 'inline-block';
+            } else {
+                // Award coins and mark as complete
+                petState.completedLessons.push(lessonId);
+                petState.coins += 50;
+                petState.learningProgress = Math.min(100, petState.learningProgress + 10);
+                
+                // Save updated state
+                localStorage.setItem('innerCentsPetState', JSON.stringify(petState));
+                
+                // Show success message
+                document.getElementById('completion-message').textContent = '✅ Lesson completed! You earned 50 coins!';
+                document.getElementById('completion-message').style.display = 'block';
+                document.getElementById('visit-pet-link').style.display = 'inline-block';
+                document.getElementById('complete-lesson-btn').disabled = true;
+                document.getElementById('complete-lesson-btn').textContent = 'Completed!';
+            }
+        });
+    </script>
 </body>
 </html>

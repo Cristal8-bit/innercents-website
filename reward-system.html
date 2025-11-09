@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Pet | InnerCents Reward System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="reward-system.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <a href="index.html" class="logo">InnerCents</a>
+            <ul class="nav-links">
+                <li><a href="index.html#problem">The Problem</a></li>
+                <li><a href="index.html#solution">The Solution</a></li>
+                <li><a href="index.html#curriculum">Curriculum</a></li>
+                <li><a href="activity.html">Activity</a></li>
+                <li><a href="demos.html">Demos</a></li>
+                <li><a href="reward-system.html" class="active">My Pet</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>My InnerCents Pet</h1>
+            <p class="section-intro">Take care of your pet by learning and completing activities!</p>
+            <div class="currency-display">
+                <i class="fas fa-coins"></i>
+                <span id="coin-count">0</span> InnerCents Coins
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Pet Display Section -->
+        <section class="pet-section">
+            <div class="container">
+                <div class="pet-container">
+                    <div class="pet-display-area">
+                        <div class="pet-background" id="pet-background">
+                            <div class="pet-sprite" id="pet-sprite">
+                                <div class="pet-emoji">🐣</div>
+                            </div>
+                            <div class="pet-speech-bubble" id="pet-speech" style="display: none;">
+                                <p id="pet-message">Hello!</p>
+                            </div>
+                        </div>
+                        <div class="pet-info">
+                            <h2 id="pet-name">My Pet</h2>
+                            <p class="pet-stage">Stage: <span id="pet-stage">Baby</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Pet Stats -->
+                    <div class="pet-stats">
+                        <div class="stat-bar">
+                            <div class="stat-label">
+                                <i class="fas fa-smile"></i> Happiness
+                            </div>
+                            <div class="stat-progress">
+                                <div class="stat-fill happiness-fill" id="happiness-bar"></div>
+                            </div>
+                            <span class="stat-value" id="happiness-value">100</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-label">
+                                <i class="fas fa-drumstick-bite"></i> Hunger
+                            </div>
+                            <div class="stat-progress">
+                                <div class="stat-fill hunger-fill" id="hunger-bar"></div>
+                            </div>
+                            <span class="stat-value" id="hunger-value">100</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-label">
+                                <i class="fas fa-battery-full"></i> Energy
+                            </div>
+                            <div class="stat-progress">
+                                <div class="stat-fill energy-fill" id="energy-bar"></div>
+                            </div>
+                            <span class="stat-value" id="energy-value">100</span>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-label">
+                                <i class="fas fa-graduation-cap"></i> Learning Progress
+                            </div>
+                            <div class="stat-progress">
+                                <div class="stat-fill learning-fill" id="learning-bar"></div>
+                            </div>
+                            <span class="stat-value" id="learning-value">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="pet-actions">
+                        <button class="action-button feed-button" id="feed-button">
+                            <i class="fas fa-apple-alt"></i> Feed (10 coins)
+                        </button>
+                        <button class="action-button play-button" id="play-button">
+                            <i class="fas fa-gamepad"></i> Play (5 coins)
+                        </button>
+                        <button class="action-button rest-button" id="rest-button">
+                            <i class="fas fa-bed"></i> Rest (Free)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shop Section -->
+        <section class="shop-section">
+            <div class="container">
+                <h2>Pet Shop</h2>
+                <p class="section-intro">Spend your InnerCents Coins to buy items for your pet!</p>
+                
+                <div class="shop-tabs">
+                    <button class="shop-tab active" data-category="food">
+                        <i class="fas fa-utensils"></i> Food
+                    </button>
+                    <button class="shop-tab" data-category="toys">
+                        <i class="fas fa-futbol"></i> Toys
+                    </button>
+                    <button class="shop-tab" data-category="accessories">
+                        <i class="fas fa-hat-wizard"></i> Accessories
+                    </button>
+                    <button class="shop-tab" data-category="backgrounds">
+                        <i class="fas fa-image"></i> Backgrounds
+                    </button>
+                </div>
+
+                <div class="shop-items" id="shop-items">
+                    <!-- Items will be dynamically populated -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Activities Section -->
+        <section class="activities-section">
+            <div class="container">
+                <h2>Earn More Coins!</h2>
+                <p class="section-intro">Complete lessons and activities to earn InnerCents Coins</p>
+                
+                <div class="activities-grid">
+                    <div class="activity-card">
+                        <i class="fas fa-book-open"></i>
+                        <h3>Complete Demo Lessons</h3>
+                        <p>Earn 50 coins for each demo lesson you complete</p>
+                        <a href="demos.html" class="cta-button">Go to Demos</a>
+                    </div>
+                    <div class="activity-card">
+                        <i class="fas fa-tasks"></i>
+                        <h3>Daily Login Bonus</h3>
+                        <p>Come back every day to earn 20 coins!</p>
+                        <button class="cta-button" id="daily-bonus-button">Claim Bonus</button>
+                    </div>
+                    <div class="activity-card">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Complete Achievements</h3>
+                        <p>Unlock special achievements for bonus coins</p>
+                        <button class="cta-button" id="achievements-button">View Achievements</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements Modal -->
+        <div class="modal" id="achievements-modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-button" id="close-achievements">&times;</span>
+                <h2>Achievements</h2>
+                <div class="achievements-list" id="achievements-list">
+                    <!-- Achievements will be dynamically populated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tutorial Modal -->
+        <div class="modal" id="tutorial-modal" style="display: none;">
+            <div class="modal-content">
+                <h2>Welcome to Your InnerCents Pet!</h2>
+                <div class="tutorial-content">
+                    <p>🎉 Welcome! You've just adopted your first InnerCents Pet!</p>
+                    <p><strong>How it works:</strong></p>
+                    <ul>
+                        <li>🪙 Earn <strong>InnerCents Coins</strong> by completing lessons and activities</li>
+                        <li>🍎 Use coins to <strong>feed</strong>, <strong>play with</strong>, and <strong>customize</strong> your pet</li>
+                        <li>📈 Keep your pet happy, fed, and energized to help it grow!</li>
+                        <li>🌟 Your pet will evolve through 3 stages: Baby → Teen → Adult</li>
+                        <li>🎓 Complete lessons to increase your Learning Progress and unlock rewards</li>
+                    </ul>
+                    <p><strong>Don't worry!</strong> Your pet won't die or run away. Stats decrease slowly, so you can take breaks!</p>
+                    <button class="cta-button" id="start-journey-button">Start My Journey!</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 InnerCents. <a href="index.html" style="color: var(--text-muted);">Return to Homepage</a></p>
+        </div>
+    </footer>
+    
+    <script src="reward-system.js"></script>
+</body>
+</html>
